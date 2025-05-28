@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prettier": "^3.5.3",
+    "repomix": "^0.3.7",
+    "vite": "^6.3.5"
+  },
+  "name": "subvert",
+  "type": "module",
+  "private": true,
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

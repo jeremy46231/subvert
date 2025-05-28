@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Subvert demo</title>
+    <script>Symbol.dispose = Symbol.for('Symbol.dispose')</script>
     <script src="src/main.ts" type="module"></script>
   </head>
   <body>
@@ -15,6 +16,7 @@
       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
       est laborum.
     </p>
+    <button id="subvert">Run attack</button>
     <style>
       body {
         font-family: sans-serif;
