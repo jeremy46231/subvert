@@ -1,5 +1,11 @@
 export abstract class FrameAttack {
-  protected readonly element!: HTMLIFrameElement
+  constructor(protected readonly element: HTMLIFrameElement) {
+    if (document.activeElement === this.element) {
+      throw new Error(
+        'ElementClick cannot be started while the iframe is already focused'
+      )
+    }
+  }
 
   protected resolve!: () => void
   protected reject!: (reason?: any) => void

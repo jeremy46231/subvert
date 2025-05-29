@@ -1,3 +1,4 @@
 node_modules
 .vite
 repomix-output.xml
+temp*

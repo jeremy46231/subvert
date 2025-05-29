@@ -2,21 +2,28 @@ import { FrameAttack } from './abstractAttack.ts'
 import {
   type Coordinate,
   calculateTransform,
+  calculateTransformAndClip,
   hiddenTransform,
   pageFocus,
   sleep,
 } from '../utils.ts'
 
-export class FullscreenClick extends FrameAttack {
+const eventNames = ['resize', 'scroll', 'orientationchange']
+
+export class ElementClick extends FrameAttack {
   constructor(
     element: HTMLIFrameElement,
+    protected pageElements: HTMLElement[],
     protected target: Coordinate,
     protected buffer: number = 5,
     protected delay: number = 300
   ) {
     super(element)
 
-    window.addEventListener('resize', this.resizeHandler)
+    for (const eventName of eventNames)
+      window.addEventListener(eventName, this.positionHandler)
+    this.positionInterval = setInterval(this.positionHandler, 100)
+
     this.updatePosition()
     // There doesn't seem to be an event that fires when the iframe is clicked,
     // but document.activeElement will be the iframe if it was clicked, so we
@@ -24,27 +31,26 @@ export class FullscreenClick extends FrameAttack {
     this.interval = setInterval(() => this.checkActiveElement(), 10)
   }
 
-  protected readonly resizeHandler = () => {
+  protected readonly positionInterval: ReturnType<typeof setInterval>
+  protected readonly positionHandler = () => {
     this.updatePosition()
   }
 
   protected readonly interval: ReturnType<typeof setInterval>
   protected updatePosition() {
-    const transform = calculateTransform(
+    const pageElementRects = this.pageElements.flatMap((el) => [...el.getClientRects()])
+
+    const { transform, clipPath } = calculateTransformAndClip(
       {
         top: this.target.y - this.buffer,
         left: this.target.x - this.buffer,
         width: 2 * this.buffer,
         height: 2 * this.buffer,
       },
-      {
-        top: 0,
-        left: 0,
-        width: window.innerWidth,
-        height: window.innerHeight,
-      }
+      pageElementRects
     )
     this.element.style.transform = transform
+    this.element.style.clipPath = clipPath
   }
 
   /** Used to stop the callback from triggering multiple times */
@@ -70,9 +76,11 @@ export class FullscreenClick extends FrameAttack {
   // Does some stuff it doesn't usually need to do, but it's a no-op usually
   // and helpful when disposing early
   dispose() {
-    window.removeEventListener('resize', this.resizeHandler)
+    for (const eventName of eventNames)
+      window.removeEventListener(eventName, this.positionHandler)
+    clearInterval(this.positionInterval)
     clearInterval(this.interval)
     this.element.style.transform = hiddenTransform
-    this.reject(new Error('FullscreenClick disposed'))
+    this.reject(new Error('ElementClick disposed'))
   }
 }
