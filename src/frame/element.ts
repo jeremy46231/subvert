@@ -16,7 +16,8 @@ export class ElementClick extends FrameAttack {
     protected pageElements: HTMLElement[],
     protected target: Coordinate,
     protected buffer: number = 5,
-    protected delay: number = 300
+    protected delay: number = 300,
+    protected onClick = () => {}
   ) {
     super(element)
 
@@ -62,6 +63,8 @@ export class ElementClick extends FrameAttack {
       // Stop waiting for clicks
       this.clicked = true
       clearInterval(this.interval)
+
+      this.onClick()
 
       // Wait for the click to probably end (no way to tell if it has)
       await sleep(this.delay)

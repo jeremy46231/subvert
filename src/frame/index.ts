@@ -2,6 +2,7 @@ import { hiddenTransform, type Coordinate } from '../utils.ts'
 import { FrameAttack } from './abstractAttack.ts'
 import { FullscreenClick } from './fullscreen.ts'
 import { ElementClick } from './element.ts'
+import { on } from 'events'
 
 export class Frame {
   /** The iframe that will be used for the attack */
@@ -9,13 +10,18 @@ export class Frame {
 
   /** The current attack in progress, if any */
   protected currentAttack: FrameAttack | null = null
-  
+
   /** Whether the class has been disposed */
   protected disposed: boolean = false
   /** If the frame was retrieved, it will not be removed when disposing */
   protected frameRetrieved: boolean = false
 
-  constructor(width = 1000, height = 1000) {
+  constructor(
+    width = 1000,
+    height = 1000,
+    public buffer = 5,
+    public delay = 300
+  ) {
     this.element = document.createElement('iframe')
 
     this.element.style.position = 'fixed'
@@ -43,19 +49,36 @@ export class Frame {
    * load the given url into the frame
    * resolves when the frame has loaded
    */
-  async load(url: string): Promise<void> {
+  async load(url: string, timeoutMs = 15_000): Promise<void> {
     return new Promise((resolve, reject) => {
       this.element.addEventListener('load', () => resolve())
       this.element.src = url
+      setTimeout(() => reject(new Error('Frame load timed out')), timeoutMs)
     })
   }
 
-  async fullscreenClick(target: Coordinate, buffer?: number): Promise<void> {
+  /**
+   * Clicks the speicified target by covering the entire viewport with the iframe
+   * and waiting for the user to click anywhere.
+   * @param target The coordinate to click
+   * @param onClick Optional callback to run as soon as the click starts (before
+   * the timeout that lets the click finish)
+   */
+  async fullscreenClick(
+    target: Coordinate,
+    onClick?: () => void
+  ): Promise<void> {
     if (this.disposed) throw new Error('Frame has been disposed')
     if (this.currentAttack)
       throw new Error('Another attack is already in progress')
 
-    this.currentAttack = new FullscreenClick(this.element, target, buffer)
+    this.currentAttack = new FullscreenClick(
+      this.element,
+      target,
+      this.buffer,
+      this.delay,
+      onClick
+    )
     try {
       await this.currentAttack.promise
     } finally {
@@ -63,20 +86,39 @@ export class Frame {
     }
   }
 
+  /**
+   * Clicks the speicified target by covering the given element with the iframe
+   * and waiting for the user to click that element.
+   * @param pageElement The element to cover with the iframe
+   * @param target The coordinate to click
+   * @param onClick Defaults to `pageElement.click()` - callback to run as soon as
+   * the click starts (before the timeout that lets the click finish)
+   */
   async elementClick(
     pageElement: HTMLElement,
     target: Coordinate,
-    buffer?: number
+    onClick?: () => void
   ): Promise<void>
+  /**
+   * Clicks the speicified target by covering the given elements with the iframe
+   * and waiting for the user to click any of those elements.
+   * @param pageElements The elements to cover with the iframe
+   * @param target The coordinate to click
+   * @param onClick Optional callback to run as soon as the click starts (before
+   * the timeout that lets the click finish)
+   */
   async elementClick(
     pageElements: HTMLElement[],
     target: Coordinate,
-    buffer?: number
+    onClick?: () => void
   ): Promise<void>
   async elementClick(
     pageElements: HTMLElement | HTMLElement[],
     target: Coordinate,
-    buffer?: number
+    onClick = () => {
+      if (Array.isArray(pageElements)) return
+      pageElements.click()
+    }
   ): Promise<void> {
     if (this.disposed) throw new Error('Frame has been disposed')
     if (this.currentAttack)
@@ -85,12 +127,14 @@ export class Frame {
     const elementList = Array.isArray(pageElements)
       ? pageElements
       : [pageElements]
-    
+
     this.currentAttack = new ElementClick(
       this.element,
       elementList,
       target,
-      buffer
+      this.buffer,
+      this.delay,
+      onClick
     )
     try {
       await this.currentAttack.promise

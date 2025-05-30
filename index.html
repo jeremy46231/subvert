@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Subvert demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       Symbol.dispose ??= Symbol.for('Symbol.dispose')
     </script>
@@ -11,18 +12,19 @@
     <h1>Subvert demo</h1>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. <a href="#" id="decoy-link">Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur.</a> Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
+      tempor incididunt ut labore et dolore magna aliqua.
+      <a href="#" id="decoy-link"
+        >Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+        ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur.</a
+      >
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum.
     </p>
     <button id="run">Run attack</button>
 
-    <button id="decoy-button">
-      This is the decoy button
-    </button>
+    <button id="decoy-button">This is the decoy button</button>
 
     <pre><code id="output"></code></pre>
 
@@ -30,6 +32,30 @@
       body {
         font-family: sans-serif;
       }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      #decoy-button.spin {
+        animation: spin 0.3s ease-out 1;
+      }
     </style>
+    <script>
+      /** @type {HTMLButtonElement} */
+      const decoy = document.getElementById('decoy-button')
+      decoy.addEventListener('click', () => {
+        decoy.classList.add('spin')
+        decoy.disabled = true
+      })
+      decoy.addEventListener('animationend', () => {
+        decoy.classList.remove('spin')
+        decoy.disabled = false
+      })
+    </script>
   </body>
 </html>

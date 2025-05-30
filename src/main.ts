@@ -22,7 +22,7 @@ async function main() {
   await frame.load('https://forms.gle/ZEBK8v684ARcuh1o9')
   log('Frame loaded')
 
-  await frame.elementClick(decoyElements, { x: 215, y: 320 })
+  await frame.elementClick(decoyButton, { x: 215, y: 320 })
   log('Clicked option')
   await frame.elementClick(decoyElements, { x: 226, y: 397 })
   log('Clicked submit')
@@ -31,6 +31,9 @@ async function main() {
 
   log('Success')
   runButton.disabled = false
+
+  const iframe = frame.retriveFrame()
+  iframe.style = ''
 }
 
 runButton.addEventListener('click', main)
