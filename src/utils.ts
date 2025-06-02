@@ -66,20 +66,18 @@ export function calculateTransformAndClip(
     return { transform: hiddenTransform, clipPath: 'none' }
   }
 
-  const targetsBoundingBox = targets.reduce(
-    (acc, target) => {
-      return {
-        top: Math.min(acc.top, target.top),
-        left: Math.min(acc.left, target.left),
-        width:
-          Math.max(acc.left + acc.width, target.left + target.width) -
-          Math.min(acc.left, target.left),
-        height:
-          Math.max(acc.top + acc.height, target.top + target.height) -
-          Math.min(acc.top, target.top),
-      }
+  const targetsBoundingBox = targets.reduce((acc, target) => {
+    return {
+      top: Math.min(acc.top, target.top),
+      left: Math.min(acc.left, target.left),
+      width:
+        Math.max(acc.left + acc.width, target.left + target.width) -
+        Math.min(acc.left, target.left),
+      height:
+        Math.max(acc.top + acc.height, target.top + target.height) -
+        Math.min(acc.top, target.top),
     }
-  )
+  })
 
   const transform = calculateTransform(source, targetsBoundingBox)
 

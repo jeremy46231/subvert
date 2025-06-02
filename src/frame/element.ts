@@ -1,7 +1,6 @@
 import { FrameAttack } from './abstractAttack.ts'
 import {
   type Coordinate,
-  calculateTransform,
   calculateTransformAndClip,
   hiddenTransform,
   pageFocus,
@@ -17,7 +16,9 @@ export class ElementClick extends FrameAttack {
     protected target: Coordinate,
     protected buffer: number = 5,
     protected delay: number = 300,
-    protected onClick = () => {}
+    protected onClick = () => {},
+    protected onHoverStart = () => {},
+    protected onHoverEnd = () => {}
   ) {
     super(element)
 
@@ -30,16 +31,48 @@ export class ElementClick extends FrameAttack {
     // but document.activeElement will be the iframe if it was clicked, so we
     // poll that
     this.interval = setInterval(() => this.checkActiveElement(), 10)
+
+    window.addEventListener('mouseover', this.pointerHandler)
+    window.addEventListener('mouseout', this.pointerHandler)
+    window.addEventListener('pointermove', this.pointerHandler, {
+      passive: true,
+    })
   }
 
   protected readonly positionInterval: ReturnType<typeof setInterval>
+  protected hovering = false
   protected readonly positionHandler = () => {
     this.updatePosition()
+  }
+  protected readonly pointerHandler = (event: Event) => {
+    const previousHovering = this.hovering
+    if (event.type === 'mouseover') {
+      if (event.target !== this.element) return
+      this.hovering = true
+    } else if (event.type === 'mouseout') {
+      if (event.target !== this.element) return
+      this.hovering = false
+    } else if (event.type === 'pointermove') {
+      // If we see the pointer moving, they must not be hovering the iframe anymore
+      this.hovering = false
+    } else {
+      throw new Error(`Unexpected pointer event: ${event.type}`)
+    }
+
+    if (this.hovering !== previousHovering && this.pageElements.length === 1) {
+      if (this.hovering) {
+        this.onHoverStart()
+      } else {
+        this.onHoverEnd()
+      }
+    }
   }
 
   protected readonly interval: ReturnType<typeof setInterval>
   protected updatePosition() {
-    const pageElementRects = this.pageElements.flatMap((el) => [...el.getClientRects()])
+    const pageElementRects = this.pageElements.flatMap((el) => [
+      ...el.getClientRects(),
+    ])
 
     const { transform, clipPath } = calculateTransformAndClip(
       {
@@ -83,6 +116,10 @@ export class ElementClick extends FrameAttack {
       window.removeEventListener(eventName, this.positionHandler)
     clearInterval(this.positionInterval)
     clearInterval(this.interval)
+    window.removeEventListener('mouseover', this.pointerHandler)
+    window.removeEventListener('mouseout', this.pointerHandler)
+    window.removeEventListener('pointermove', this.pointerHandler)
+    this.onHoverEnd()
     this.element.style.transform = hiddenTransform
     this.reject(new Error('ElementClick disposed'))
   }

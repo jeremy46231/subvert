@@ -10,7 +10,7 @@
   </head>
   <body>
     <h1>Subvert demo</h1>
-    <p>
+    <!-- <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua.
       <a href="#" id="decoy-link"
@@ -21,19 +21,35 @@
       >
       Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
       deserunt mollit anim id est laborum.
-    </p>
-    <button id="run">Run attack</button>
+    </p> -->
+    <!-- <p>
+      <button id="run">Run attack</button>
+      <button id="decoy-button">This is the decoy button</button>
+    </p> -->
 
-    <button id="decoy-button">This is the decoy button</button>
+    <form id="test-form" onsubmit="event.preventDefault()">
+      <fieldset>
+        <legend>This is a test form.</legend>
+        <p>
+          <label id="terms-label">
+            <input id="terms-checkbox" type="checkbox" required disabled />
+            Accept the Terms and Conditions
+          </label>
+        </p>
+        <p>
+          <input id="submit-button" type="submit" value="Submit" disabled />
+        </p>
+      </fieldset>
+    </form>
 
-    <pre><code id="output"></code></pre>
+    <pre style="color: #999"><code id="output"></code></pre>
 
     <style>
       body {
         font-family: sans-serif;
       }
 
-      @keyframes spin {
+      /* @keyframes spin {
         from {
           transform: rotate(0deg);
         }
@@ -43,9 +59,13 @@
       }
       #decoy-button.spin {
         animation: spin 0.3s ease-out 1;
+      } */
+
+      #test-form fieldset {
+        max-width: max-content;
       }
     </style>
-    <script>
+    <!-- <script>
       /** @type {HTMLButtonElement} */
       const decoy = document.getElementById('decoy-button')
       decoy.addEventListener('click', () => {
@@ -56,6 +76,6 @@
         decoy.classList.remove('spin')
         decoy.disabled = false
       })
-    </script>
+    </script> -->
   </body>
 </html>

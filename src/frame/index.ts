@@ -1,8 +1,8 @@
 import { hiddenTransform, type Coordinate } from '../utils.ts'
+import { fakeHover } from '../fakeHover.ts'
 import { FrameAttack } from './abstractAttack.ts'
 import { FullscreenClick } from './fullscreen.ts'
 import { ElementClick } from './element.ts'
-import { on } from 'events'
 
 export class Frame {
   /** The iframe that will be used for the attack */
@@ -91,13 +91,19 @@ export class Frame {
    * and waiting for the user to click that element.
    * @param pageElement The element to cover with the iframe
    * @param target The coordinate to click
-   * @param onClick Defaults to `pageElement.click()` - callback to run as soon as
-   * the click starts (before the timeout that lets the click finish)
+   * @param onClick Optional callback to run as soon as the click starts (before
+   * the timeout that lets the click finish) - defaults to `pageElement.click()`
+   * @param onHoverStart Optional callback to run when the iframe is hovered -
+   * defaults to faking hover styles on the element (if the element is supported)
+   * @param onHoverEnd Optional callback to run when the iframe is no longer
+   * hovered - defaults to clearing the inline styles on the element
    */
   async elementClick(
     pageElement: HTMLElement,
     target: Coordinate,
-    onClick?: () => void
+    onClick?: () => void,
+    onHoverStart?: () => void,
+    onHoverEnd?: () => void
   ): Promise<void>
   /**
    * Clicks the speicified target by covering the given elements with the iframe
@@ -118,6 +124,14 @@ export class Frame {
     onClick = () => {
       if (Array.isArray(pageElements)) return
       pageElements.click()
+    },
+    onHoverStart = () => {
+      if (Array.isArray(pageElements)) return
+      fakeHover(pageElements, true)
+    },
+    onHoverEnd = () => {
+      if (Array.isArray(pageElements)) return
+      fakeHover(pageElements, false)
     }
   ): Promise<void> {
     if (this.disposed) throw new Error('Frame has been disposed')
@@ -134,7 +148,9 @@ export class Frame {
       target,
       this.buffer,
       this.delay,
-      onClick
+      onClick,
+      onHoverStart,
+      onHoverEnd
     )
     try {
       await this.currentAttack.promise

