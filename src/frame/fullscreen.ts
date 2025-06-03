@@ -1,18 +1,20 @@
 import { FrameAttack } from './abstractAttack.ts'
 import {
   type Coordinate,
-  calculateTransform,
-  hiddenTransform,
-  pageFocus,
   sleep,
 } from '../utils.ts'
+import {
+  calculateTransform,
+  hiddenTransform,
+  pageFocus
+} from "./frameUtils.ts"
 
 export class FullscreenClick extends FrameAttack {
   constructor(
     element: HTMLIFrameElement,
     protected target: Coordinate,
-    protected buffer: number = 5,
-    protected delay: number = 300,
+    protected buffer: number,
+    protected delay: number,
     protected onClick = () => {}
   ) {
     super(element)

@@ -1,11 +1,13 @@
 import { FrameAttack } from './abstractAttack.ts'
 import {
   type Coordinate,
-  calculateTransformAndClip,
-  hiddenTransform,
-  pageFocus,
   sleep,
 } from '../utils.ts'
+import {
+  calculateTransformAndClip,
+  hiddenTransform,
+  pageFocus
+} from "./frameUtils.ts"
 
 const eventNames = ['resize', 'scroll', 'orientationchange']
 
@@ -14,8 +16,8 @@ export class ElementClick extends FrameAttack {
     element: HTMLIFrameElement,
     protected pageElements: HTMLElement[],
     protected target: Coordinate,
-    protected buffer: number = 5,
-    protected delay: number = 300,
+    protected buffer: number,
+    protected delay: number,
     protected onClick = () => {},
     protected onHoverStart = () => {},
     protected onHoverEnd = () => {}
@@ -24,14 +26,13 @@ export class ElementClick extends FrameAttack {
 
     for (const eventName of eventNames)
       window.addEventListener(eventName, this.positionHandler)
-    this.positionInterval = setInterval(this.positionHandler, 100)
+    // this.positionInterval = setInterval(this.positionHandler, 100)
 
     this.updatePosition()
     // There doesn't seem to be an event that fires when the iframe is clicked,
     // but document.activeElement will be the iframe if it was clicked, so we
     // poll that
     this.interval = setInterval(() => this.checkActiveElement(), 10)
-
     window.addEventListener('mouseover', this.pointerHandler)
     window.addEventListener('mouseout', this.pointerHandler)
     window.addEventListener('pointermove', this.pointerHandler, {

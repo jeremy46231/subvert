@@ -1,5 +1,5 @@
-import { hiddenTransform, type Coordinate } from '../utils.ts'
-import { fakeHover } from '../fakeHover.ts'
+import { type Coordinate } from '../utils.ts'
+import { hiddenTransform, fakeHover } from "./frameUtils.ts"
 import { FrameAttack } from './abstractAttack.ts'
 import { FullscreenClick } from './fullscreen.ts'
 import { ElementClick } from './element.ts'
@@ -20,7 +20,7 @@ export class Frame {
     width = 1000,
     height = 1000,
     public buffer = 5,
-    public delay = 300
+    public delay = 350
   ) {
     this.element = document.createElement('iframe')
 
