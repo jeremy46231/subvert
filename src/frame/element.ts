@@ -1,13 +1,10 @@
 import { FrameAttack } from './abstractAttack.ts'
-import {
-  type Coordinate,
-  sleep,
-} from '../utils.ts'
+import { type Coordinate, sleep } from '../utils.ts'
 import {
   calculateTransformAndClip,
   hiddenTransform,
-  pageFocus
-} from "./frameUtils.ts"
+  pageFocus,
+} from './frameUtils.ts'
 
 const eventNames = ['resize', 'scroll', 'orientationchange']
 
@@ -26,7 +23,7 @@ export class ElementClick extends FrameAttack {
 
     for (const eventName of eventNames)
       window.addEventListener(eventName, this.positionHandler)
-    // this.positionInterval = setInterval(this.positionHandler, 100)
+    this.positionInterval = setInterval(this.positionHandler, 100)
 
     this.updatePosition()
     // There doesn't seem to be an event that fires when the iframe is clicked,

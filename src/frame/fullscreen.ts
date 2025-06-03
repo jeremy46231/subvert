@@ -1,13 +1,6 @@
 import { FrameAttack } from './abstractAttack.ts'
-import {
-  type Coordinate,
-  sleep,
-} from '../utils.ts'
-import {
-  calculateTransform,
-  hiddenTransform,
-  pageFocus
-} from "./frameUtils.ts"
+import { type Coordinate, sleep } from '../utils.ts'
+import { calculateTransform, hiddenTransform, pageFocus } from './frameUtils.ts'
 
 export class FullscreenClick extends FrameAttack {
   constructor(

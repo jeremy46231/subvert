@@ -20,7 +20,7 @@ async function main() {
   console.log('Frame loaded')
 
   testForm.reset()
-  
+
   termsCheckbox.disabled = false
   await frame.elementClick(termsLabel, { x: 215, y: 320 })
   console.log('Clicked option')

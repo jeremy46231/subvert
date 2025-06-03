@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Subvert demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <h1>Prove you are human</h1>
+    <p>Double click every button on this page to prove you are not a human</p>
+    <div id="buttons"></div>
+    <button class="sized positioned" onclick="window.close()"></button>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .sized {
+        height: 28px;
+        width: 102px;
+        border: none;
+        border-radius: 0.375rem;
+        opacity: 0.7;
+        background-color: #000000;
+      }
+      .positioned {
+        position: absolute;
+        top: 7.5rem;
+        right: calc(max((100vw - 1280px) / 2, 0px) + 48px + 1rem);
+      }
+      /* Narrow layout */
+      @media (max-width: 767.98px) {
+        .positioned {
+          left: 6rem;
+        }
+        .sized {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+      /* Account for the "Open in the GitHub app" bar on iOS */
+      /* Shift down half so hopefully they click whichever position is there */
+      @supports (-webkit-touch-callout: none) {
+        .positioned {
+          top: calc(7.5rem + (45px / 2));
+        }
+      }
+
+      .clicked {
+        background-color: #00ff00;
+        opacity: 1;
+      }
+    </style>
+    <script>
+      const buttonCount = 9
+      const container = document.getElementById('buttons')
+      const buttonWidth = 102
+      const buttonHeight = 28
+      const maxTop = window.innerHeight / 4 - buttonHeight
+      const maxLeft = window.innerWidth - buttonWidth
+
+      let buttons = []
+
+      for (let i = 0; i < buttonCount; i++) {
+        const btn = document.createElement('button')
+        btn.className = 'sized'
+        btn.style.position = 'absolute'
+        btn.style.top = `${Math.random() * maxTop}px`
+        btn.style.left = `${Math.random() * maxLeft}px`
+        container.appendChild(btn)
+        buttons.push(btn)
+
+        btn.addEventListener('click', function handleClick(event) {
+          /** @type {HTMLButtonElement} */
+          const clicked = event.currentTarget
+          if (clicked.classList.contains('clicked')) {
+            // now we're on the second click, remove the button and reenable all buttons
+            clicked.remove()
+            buttons = buttons.filter(b => b !== clicked)
+            buttons.forEach(b => b.disabled = false)
+          } else {
+            // first click, disable all other buttons
+            buttons.forEach(b => {
+              if (b !== clicked) {
+                b.disabled = true
+              }
+            })
+            clicked.classList.add('clicked')
+          }
+        })
+      }
+    </script>
+  </body>
+</html>

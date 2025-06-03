@@ -1,5 +1,5 @@
 import { type Coordinate } from '../utils.ts'
-import { hiddenTransform, fakeHover } from "./frameUtils.ts"
+import { hiddenTransform, fakeHover } from './frameUtils.ts'
 import { FrameAttack } from './abstractAttack.ts'
 import { FullscreenClick } from './fullscreen.ts'
 import { ElementClick } from './element.ts'
