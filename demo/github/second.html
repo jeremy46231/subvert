@@ -6,69 +6,41 @@
   </head>
   <body>
     <h1>Prove you are human</h1>
-    <p>Double click every button on this page to prove you are not a human</p>
-    <div id="buttons"></div>
-    <button class="sized positioned" onclick="window.close()"></button>
-    <style>
-      body {
-        font-family: sans-serif;
-      }
-      .sized {
-        height: 28px;
-        width: 102px;
-        border: none;
-        border-radius: 0.375rem;
-        opacity: 0.7;
-        background-color: #000000;
-      }
-      .positioned {
-        position: absolute;
-        top: 7.5rem;
-        right: calc(max((100vw - 1280px) / 2, 0px) + 48px + 1rem);
-      }
-      /* Narrow layout */
-      @media (max-width: 767.98px) {
-        .positioned {
-          left: 6rem;
-        }
-        .sized {
-          width: 2rem;
-          height: 2rem;
-        }
-      }
-      /* Account for the "Open in the GitHub app" bar on iOS */
-      /* Shift down half so hopefully they click whichever position is there */
-      @supports (-webkit-touch-callout: none) {
-        .positioned {
-          top: calc(7.5rem + (45px / 2));
-        }
-      }
+    <p>Double click every button on this page to prove you are a human</p>
 
-      .clicked {
-        background-color: #00ff00;
-        opacity: 1;
-      }
-    </style>
-    <script>
-      const buttonCount = 9
+    <div id="buttons">
+      <button id="main-button" class="sized positioned"></button>
+    </div>
+
+    <script type="module">
+      import { isMobile } from '../../library/isMobile'
+
       const container = document.getElementById('buttons')
+      const mainButton = document.getElementById('main-button')
+
+      const buttonCount = 10
       const buttonWidth = 102
       const buttonHeight = 28
       const maxTop = window.innerHeight / 4 - buttonHeight
       const maxLeft = window.innerWidth - buttonWidth
 
-      let buttons = []
+      mainButton.addEventListener('click', (event) => {
+        tryPopup()
+        window.close()
+      })
 
-      for (let i = 0; i < buttonCount; i++) {
+      let buttons = [mainButton]
+
+      for (let i = 1; i < buttonCount; i++) {
         const btn = document.createElement('button')
         btn.className = 'sized'
         btn.style.position = 'absolute'
         btn.style.top = `${Math.random() * maxTop}px`
         btn.style.left = `${Math.random() * maxLeft}px`
-        container.appendChild(btn)
+        container.prepend(btn)
         buttons.push(btn)
 
-        btn.addEventListener('click', function handleClick(event) {
+        btn.addEventListener('click', (event) => {
           /** @type {HTMLButtonElement} */
           const clicked = event.currentTarget
           if (clicked.classList.contains('clicked')) {
@@ -87,6 +59,84 @@
           }
         })
       }
+
+      function tryPopup() {
+        if (isMobile()) return // No popups on mobile
+
+        // On desktop, we can open an interesting popup the user will see
+        const heightAbove = 250
+        const widthFraction = 0.5 // 50% of the viewport width
+
+        // Find the position of the viewport on screen
+        const viewportWidth = window.innerWidth
+        const viewportHeight = window.innerHeight
+        const viewportScreenX =
+          window.screenX !== undefined ? window.screenX : window.screenLeft
+        const viewportScreenY =
+          window.screenY !== undefined ? window.screenY : window.screenTop
+
+        // Calculate the popup dimensions
+        let popupWidth = Math.round(viewportWidth * widthFraction)
+        let popupHeight = Math.round(viewportHeight - heightAbove)
+
+        // Minimum size for the popup: 100x100
+        if (popupWidth < 100) popupWidth = 100 // Minimum width
+        if (popupHeight < 100) return // Cannot be too tall, give up
+
+        // Calculate the position of the popup
+        const popupLeft = viewportScreenX
+        const popupTop = viewportScreenY + heightAbove
+
+        const popup = window.open(
+          'popup',
+          '_blank',
+          `popup=true,left=${popupLeft},top=${popupTop},width=${popupWidth},height=${popupHeight}`
+        )
+      }
     </script>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      /* Sized the same as the "Star" button on GitHub, and styled for this page */
+      .sized {
+        height: 28px;
+        width: 102px;
+        border: none;
+        border-radius: 0.375rem;
+        opacity: 0.7;
+        background-color: #000000;
+      }
+      /* Precisely positioned to match the position of the Star button on GitHub */
+      .positioned {
+        position: absolute;
+        top: 7.5rem;
+        right: calc(max((100vw - 1280px) / 2, 0px) + 48px + 1rem);
+      }
+      /* Used when the button has been clicked once */
+      .clicked {
+        background-color: #00ff00;
+        opacity: 1;
+      }
+
+      /* Narrow layout */
+      @media (max-width: 767.98px) {
+        .positioned {
+          left: 6rem;
+        }
+        .sized {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+
+      /* Account for the "Open in the GitHub app" bar which may be present on iOS */
+      /* Shift down half so hopefully they click whichever position is there */
+      @supports (-webkit-touch-callout: none) {
+        .positioned {
+          top: calc(7.5rem + (45px / 2));
+        }
+      }
+    </style>
   </body>
 </html>

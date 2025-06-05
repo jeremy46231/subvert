@@ -3,7 +3,6 @@
   <head>
     <title>Subvert demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="main.ts" type="module"></script>
   </head>
   <body>
     <h1>Subvert tab-switching demo</h1>
@@ -15,5 +14,16 @@
         font-family: sans-serif;
       }
     </style>
+    <script>
+      const attackButton = document.getElementById('attack-button')
+      attackButton.addEventListener('click', () => {
+        const secondTab = window.open('second', '_blank')
+        if (!secondTab) {
+          alert('Please allow pop-ups for this site to open the second tab.')
+          return
+        }
+        window.location.href = 'https://github.com/jeremy46231/subvert'
+      })
+    </script>
   </body>
 </html>
