@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Subvert demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <h1>Sign in to continue</h1>
+
+    <button id="button">Sign in</button>
+
+    <script>
+      document.getElementById('button').addEventListener('click', () => {
+        const secondTab = window.open('second', '_blank')
+        if (!secondTab) {
+          alert('Please allow pop-ups for this site to open the second tab.')
+          return
+        }
+        window.location.href = 'https://github.com/jeremy46231/subvert'
+      })
+    </script>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+    </style>
+  </body>
+</html>

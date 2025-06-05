@@ -25,7 +25,9 @@
       const maxLeft = window.innerWidth - buttonWidth
 
       mainButton.addEventListener('click', (event) => {
-        tryPopup()
+        try {
+          window.opener.opener.done()
+        } catch {}
         window.close()
       })
 
@@ -59,44 +61,13 @@
           }
         })
       }
-
-      function tryPopup() {
-        if (isMobile()) return // No popups on mobile
-
-        // On desktop, we can open an interesting popup the user will see
-        const heightAbove = 250
-        const widthFraction = 0.5 // 50% of the viewport width
-
-        // Find the position of the viewport on screen
-        const viewportWidth = window.innerWidth
-        const viewportHeight = window.innerHeight
-        const viewportScreenX =
-          window.screenX !== undefined ? window.screenX : window.screenLeft
-        const viewportScreenY =
-          window.screenY !== undefined ? window.screenY : window.screenTop
-
-        // Calculate the popup dimensions
-        let popupWidth = Math.round(viewportWidth * widthFraction)
-        let popupHeight = Math.round(viewportHeight - heightAbove)
-
-        // Minimum size for the popup: 100x100
-        if (popupWidth < 100) popupWidth = 100 // Minimum width
-        if (popupHeight < 100) return // Cannot be too tall, give up
-
-        // Calculate the position of the popup
-        const popupLeft = viewportScreenX
-        const popupTop = viewportScreenY + heightAbove
-
-        const popup = window.open(
-          'popup',
-          '_blank',
-          `popup=true,left=${popupLeft},top=${popupTop},width=${popupWidth},height=${popupHeight}`
-        )
-      }
     </script>
     <style>
       body {
         font-family: sans-serif;
+      }
+      * {
+        touch-action: none;
       }
       /* Sized the same as the "Star" button on GitHub, and styled for this page */
       .sized {
