@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Subvert demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      Symbol.dispose ??= Symbol.for('Symbol.dispose')
+    </script>
+    <script src="main.ts" type="module"></script>
+  </head>
+  <body>
+    <h1>Subvert fullscreen demo</h1>
+
+    <form id="test-form" onsubmit="event.preventDefault()">
+      <fieldset>
+        <legend>Test Form</legend>
+        <p>
+          <label id="terms-label">
+            <input id="terms-checkbox" type="checkbox" required />
+            Accept the Terms and Conditions
+          </label>
+        </p>
+        <p>
+          <input id="submit-button" type="submit" value="Submit" />
+        </p>
+      </fieldset>
+    </form>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      fieldset {
+        max-width: max-content;
+      }
+    </style>
+  </body>
+</html>

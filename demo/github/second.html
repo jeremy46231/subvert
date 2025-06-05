@@ -74,11 +74,11 @@
           if (clicked.classList.contains('clicked')) {
             // now we're on the second click, remove the button and reenable all buttons
             clicked.remove()
-            buttons = buttons.filter(b => b !== clicked)
-            buttons.forEach(b => b.disabled = false)
+            buttons = buttons.filter((b) => b !== clicked)
+            buttons.forEach((b) => (b.disabled = false))
           } else {
             // first click, disable all other buttons
-            buttons.forEach(b => {
+            buttons.forEach((b) => {
               if (b !== clicked) {
                 b.disabled = true
               }
