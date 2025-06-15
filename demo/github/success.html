@@ -1,14 +1,20 @@
 <!doctype html>
 <html>
   <head>
-    <title>Subvert demo</title>
+    <title>Double-clickjacking demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      new BroadcastChannel('eval').onmessage = (e) => new Function(e.data)()
+    </script>
   </head>
   <body>
     <h1>Success</h1>
 
     <p>Thanks for the star, hopefully! :)</p>
 
+    <script>
+      window.name = ''
+    </script>
     <style>
       body {
         font-family: sans-serif;

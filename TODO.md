@@ -1,5 +1,6 @@
-- [ ] Iframe-based attacks
+List of ideas and plans for future additions. I'm not planning on implementing all of the incomplete items, they're just ideas.
 
+- [x] Iframe-based attacks
   - [x] General framework
   - [x] Fullscreen iframe attack
   - [x] Single-element iframe attack
@@ -10,6 +11,13 @@
     - [ ] Drag and drop attack
     - [ ] Paste/type attack
 
-- [ ] Tab-swapping attacks[^1]
+- [ ] Double-clickjacking attacks[^1]
+  - [ ] Attacks against different services
+    - [x] GitHub
+    - [ ] more...
+  - [ ] UI for tricking the user
+    - [x] Basic UI
+    - [ ] Fake Cloudflare Turnstile page
+    - [ ] more...
 
-[^1]: https://www.paulosyibelo.com/2024/12/doubleclickjacking-what.html
+[^1]: I first learned about this from https://paulosyibelo.com/2024/12/doubleclickjacking-what.html

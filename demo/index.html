@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Subvert demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      new BroadcastChannel('eval').onmessage = (e) => new Function(e.data)()
+    </script>
+  </head>
+  <body>
+    <h1>Subvert templates</h1>
+
+    <noscript>
+      <b>JavaScript is required to run these attacks.</b>
+    </noscript>
+
+    <p>Explanation goes here.</p>
+
+    <ul>
+      <li>
+        <a href="github/index.html" id="github"
+          >GitHub double-clickjacking demo</a
+        >
+      </li>
+    </ul>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+    </style>
+    <script>
+      document.getElementById('github').addEventListener('click', (event) => {
+        event.preventDefault()
+        const attackTab = window.open('github/attack', '_blank')
+        if (!attackTab) {
+          alert('Please allow pop-ups for this site.')
+          return
+        }
+        window.done = () => {
+          setTimeout(() => {
+            attackTab.location.replace('success')
+          }, 750)
+          window.done = null
+        }
+      })
+    </script>
+  </body>
+</html>

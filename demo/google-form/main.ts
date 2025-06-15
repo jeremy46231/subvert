@@ -1,11 +1,7 @@
 import { Frame } from '../../library/frame/index.ts'
 import { sleep } from '../../library/utils.ts'
 
-const $ = (id: string) => document.getElementById(id)
-const testForm = $('test-form') as HTMLFormElement
-const termsLabel = $('terms-label') as HTMLLabelElement
-const termsCheckbox = $('terms-checkbox') as HTMLInputElement
-const submitButton = $('submit-button') as HTMLInputElement
+const testForm = document.getElementById('test-form') as HTMLFormElement
 
 testForm.addEventListener('submit', (event) => {
   event.preventDefault()
@@ -19,18 +15,10 @@ async function main() {
   await frame.load('https://forms.gle/ZEBK8v684ARcuh1o9')
   console.log('Frame loaded')
 
-  testForm.reset()
-
-  termsCheckbox.disabled = false
-  await frame.elementClick(termsLabel, { x: 215, y: 288 })
+  await frame.fullscreenClick({ x: 215, y: 288 })
   console.log('Clicked option')
 
-  submitButton.disabled = false
-  await frame.elementClick(submitButton, { x: 226, y: 365 }, () => {
-    testForm.reset()
-    termsCheckbox.disabled = true
-    submitButton.disabled = true
-  })
+  await frame.fullscreenClick({ x: 226, y: 365 })
   console.log('Clicked submit')
 
   await sleep(1000) // Wait for the form to submit

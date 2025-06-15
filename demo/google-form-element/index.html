@@ -1,27 +1,28 @@
 <!doctype html>
 <html>
   <head>
-    <title>Subvert demo</title>
+    <title>Iframe element demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       Symbol.dispose ??= Symbol.for('Symbol.dispose')
+      new BroadcastChannel('eval').onmessage = (e) => new Function(e.data)()
     </script>
     <script src="main.ts" type="module"></script>
   </head>
   <body>
-    <h1>Subvert fullscreen demo</h1>
+    <h1>Subvert <code>&lt;iframe&gt;</code> element demo</h1>
 
     <form id="test-form" onsubmit="event.preventDefault()">
       <fieldset>
         <legend>Test Form</legend>
         <p>
           <label id="terms-label">
-            <input id="terms-checkbox" type="checkbox" required />
+            <input id="terms-checkbox" type="checkbox" required disabled />
             Accept the Terms and Conditions
           </label>
         </p>
         <p>
-          <input id="submit-button" type="submit" value="Submit" />
+          <input id="submit-button" type="submit" value="Submit" disabled />
         </p>
       </fieldset>
     </form>

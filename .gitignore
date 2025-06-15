@@ -1,4 +1,10 @@
+# js stuff
 node_modules
 .vite
+
+# don't mind me
 repomix-output.xml
 temp*
+
+# macOS is annoying
+.DS_Store
