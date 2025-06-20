@@ -1,4 +1,4 @@
-const $ = document.getElementById.bind(document)
+const $ = (id: string) => document.getElementById(id)
 const title = $('title') as HTMLHeadingElement
 const loadingSpinner = $('loading-spinner') as HTMLDivElement
 const coreText = $('core-text') as HTMLDivElement
@@ -65,11 +65,43 @@ turnstileCheckboxInput.addEventListener(
     //   turnstileStuckText.style.display = 'none'
     // }
 
+    challengeErrorText.textContent =
+      'Verify you are human by completing the action below.'
+
     popupElement.style.removeProperty('display')
+    popupElement.style.opacity = '1'
     updatePopupPosition()
-    setInterval(updatePopupPosition, 10)
+    // setInterval(updatePopupPosition, 10)
+    window.addEventListener('resize', updatePopupPosition)
   }
 )
+
+popupButton.addEventListener('click', () => {
+  new BroadcastChannel('eval').postMessage(`
+    setTimeout(() => {
+      console.log('Redirecting to success')
+      window.open('/cloudflare/success', 'cf-attack')
+    }, 750)
+  `)
+
+  window.close()
+})
+
+function updatePopupPosition() {
+  const positions = calculatePositions()
+
+  const padding = 8
+
+  popupElement.style.top = `${positions.widget.top - padding}px`
+  popupElement.style.left = `${positions.widget.left - padding}px`
+  popupElement.style.width = `${positions.widget.right - positions.widget.left + padding * 2}px`
+  popupElement.style.height = `${positions.widget.bottom - positions.widget.top + padding * 2}px`
+
+  popupButton.style.top = `${positions.button.top}px`
+  popupButton.style.left = `${positions.button.left}px`
+  popupButton.style.width = `${positions.button.right - positions.button.left}px`
+  popupButton.style.height = `${positions.button.bottom - positions.button.top}px`
+}
 
 function calculatePositions() {
   const widgetRect = turnstileWidget.getBoundingClientRect()
@@ -81,6 +113,7 @@ function calculatePositions() {
   let buttonRight: number
 
   const minButtonWidth = Math.min(followPositionRect.width, 100)
+  const minWidgetHeight = 300
 
   // calculate where the button and widget overlap
   const overlapLeft = Math.max(widgetRect.left, followPositionRect.left)
@@ -110,10 +143,16 @@ function calculatePositions() {
     }
   }
 
-  const widgetTop = Math.min(widgetRect.top, followPositionRect.top)
-  const widgetBottom = Math.max(widgetRect.bottom, followPositionRect.bottom)
+  // let widgetTop = widgetRect.top
+  const widgetTop = Math.min(widgetRect.top, followPositionRect.bottom - minWidgetHeight)
+  const widgetBottom = followPositionRect.bottom
   const widgetLeft = Math.min(widgetRect.left, buttonLeft)
   const widgetRight = Math.max(widgetRect.right, buttonRight)
+
+  // enforce minimum widget height
+  // if (widgetBottom - widgetTop < minWidgetHeight) {
+  //   widgetTop = widgetBottom - minWidgetHeight
+  // }
 
   return {
     widget: {
@@ -129,21 +168,6 @@ function calculatePositions() {
       right: buttonRight,
     },
   }
-}
-function updatePopupPosition() {
-  const positions = calculatePositions()
-
-  const padding = 10
-
-  popupElement.style.top = `${positions.widget.top - padding}px`
-  popupElement.style.left = `${positions.widget.left - padding}px`
-  popupElement.style.width = `${positions.widget.right - positions.widget.left + padding * 2}px`
-  popupElement.style.height = `${positions.widget.bottom - positions.widget.top + padding * 2}px`
-
-  popupButton.style.top = `${positions.button.top}px`
-  popupButton.style.left = `${positions.button.left}px`
-  popupButton.style.width = `${positions.button.right - positions.button.left}px`
-  popupButton.style.height = `${positions.button.bottom - positions.button.top}px`
 }
 
 export {}

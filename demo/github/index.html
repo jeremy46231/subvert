@@ -10,15 +10,18 @@
   <body>
     <h1>Double-clickjacking demo</h1>
 
-    <!-- Click <button id="start-button">here</button> to start the attack. -->
-    Click <a href="attack" target="github-attack">here</a> to start the
-    attack.
+    Click <a href="#" id="start">here</a> to start the attack.
 
-    <!-- <script>
-      // document.getElementById('start-button').addEventListener('click', () => {
-      //   const attackTab = window.open('attack', '_blank')
-      // })
-    </script> -->
+    <script>
+      document.getElementById('start').addEventListener('click', (event) => {
+        event.preventDefault()
+        const attackTab = window.open('attack', 'github-attack')
+        if (!attackTab) {
+          alert('Please allow pop-ups for this site.')
+          return
+        }
+      })
+    </script>
     <style>
       body {
         font-family: sans-serif;

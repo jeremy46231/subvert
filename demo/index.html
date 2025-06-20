@@ -22,6 +22,11 @@
           >GitHub double-clickjacking demo</a
         >
       </li>
+      <li>
+        <a href="cloudflare/index.html" id="cloudflare"
+          >Cloudflare double-clickjacking demo</a
+        >
+      </li>
     </ul>
 
     <style>
@@ -30,20 +35,18 @@
       }
     </style>
     <script>
-      document.getElementById('github').addEventListener('click', (event) => {
-        event.preventDefault()
-        const attackTab = window.open('github/attack', '_blank')
-        if (!attackTab) {
-          alert('Please allow pop-ups for this site.')
-          return
-        }
-        window.done = () => {
-          setTimeout(() => {
-            attackTab.location.replace('success')
-          }, 750)
-          window.done = null
-        }
-      })
+      function setupEventListener(id, path, name) {
+        document.getElementById(id).addEventListener('click', (event) => {
+          event.preventDefault()
+          const attackTab = window.open(path, name)
+          if (!attackTab) {
+            alert('Please allow pop-ups for this site.')
+            return
+          }
+        })
+      }
+      setupEventListener('github', 'github/attack', 'github-attack')
+      setupEventListener('cloudflare', 'cloudflare/attack', 'cf-attack')
     </script>
   </body>
 </html>

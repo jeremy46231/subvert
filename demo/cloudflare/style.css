@@ -1,12 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
+
 #follow-position {
   position: fixed;
   height: 32px;
   border-radius: 6px;
   left: 1rem;
-  top: calc(9.625rem + 20px + max(2rem, 32px) + max((100vw - 2rem) / 6, 2rem + 54px));
+  top: calc(
+    9.625rem + 20px + max(2rem, 32px) + max((100vw - 2rem) / 6, 2rem + 54px)
+  );
   width: calc(100vw - 2rem);
 
   visibility: hidden;
+}
+@media (max-width: 275px) {
+  #follow-position {
+    top: calc(11.625rem + 98px + max(2rem, 32px));
+  }
 }
 @media (min-width: 768px) {
   #follow-position {
@@ -25,16 +34,41 @@
 
 #popup {
   position: fixed;
-  border: 1px solid #e0e0e0;
   background-color: #fafafa;
-  color: black;
-  padding: 1rem;
+  border: 1px solid #cccccc;
+  box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px;
+  transition:
+    visibility linear,
+    opacity 0.3s linear;
+
+  color: white;
+  font-family: Roboto, helvetica, arial, sans-serif;
+  font-size: 14px;
+}
+.popup-header {
+  height: 113px;
+  background-color: #1a73e8;
+  padding: 24px;
+  margin: 7px;
+}
+.popup-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #dfdfdf;
+  padding-bottom: 47px;
 }
 #popup-button {
   position: fixed;
-  border: 1px solid #6d6d6d;
-  border-radius: 5px;
-  background-color: #fff;
+
+  border: none;
+  border-radius: 2px;
+  background-color: #1a73e8;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: inherit;
 }
 
 * {

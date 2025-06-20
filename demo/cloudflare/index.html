@@ -1,236 +1,31 @@
 <!doctype html>
 <html>
   <head>
-    <title>Just a moment...</title>
+    <title>Double-clickjacking demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       new BroadcastChannel('eval').onmessage = (e) => new Function(e.data)()
-      history.replaceState(null, '', location.pathname + '?__cf_chl_rt_tk=QXMQ8mYgW1aScjUnRJqWq0iBdboTU6RMqC18hTNn8XA-1750040152-1.0.1.1-PIzbPvQzyEcVPOHV7QrOX6zXnE5v5uYIo_Wy65dIlxs')
     </script>
-    <link rel="stylesheet" href="style.css" />
-    <script src="main.ts" type="module"></script>
   </head>
   <body>
-    <div class="main-wrapper">
-      <main>
-        <h1 class="zone-name-title" id="title">
-          <script>
-            document.write(location.hostname)
-          </script>
-        </h1>
-        <h2
-          class="spacer-bottom challenge-error-text"
-          id="challenge-error-text"
-        >
-          Verifying you are human. This may take a few seconds.
-        </h2>
+    <h1>Double-clickjacking demo</h1>
 
-        <div class="spacer loading-verifying" id="loading-spinner">
-          <div class="lds-ring">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-        <div style="display: flow-root">
-          <div style="display: none" class="turnstile" id="turnstile-widget">
-            <div
-              class="turnstile-main-wrapper"
-            >
-              <div class="content" style="display: flex">
-                <div
-                  style="display: none"
-                  id="turnstile-checkbox"
-                >
-                  <div style="display: flex" class="cb-c">
-                    <label class="cb-lb">
-                      <input type="checkbox" id="turnstile-checkbox-input" />
-                      <span class="cb-i"></span
-                      ><span class="cb-lb-t">Verify you are human</span>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="verifying cb-container"
-                  style="display: grid"
-                  id="turnstile-verifying"
-                >
-                  <div class="verifying-container">
-                    <svg
-                      class="verifying-i"
-                      viewBox="0 0 30 30"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                      class="unspun"
-                    >
-                      <line
-                        x1="15"
-                        x2="15"
-                        y1="1.5"
-                        y2="5.5"
-                        class="circle"
-                      ></line>
-                      <line
-                        x1="24.5459"
-                        x2="24.5459"
-                        y1="5.45405"
-                        y2="10.45405"
-                        transform="rotate(45 24.5459 5.45405)"
-                        class="circle"
-                      ></line>
-                      <line
-                        x1="28.5"
-                        x2="28.5"
-                        y1="15"
-                        y2="20"
-                        transform="rotate(90 28.5 15)"
-                        class="circle"
-                      ></line>
-                      <line
-                        x1="24.5459"
-                        x2="24.5459"
-                        y1="24.546"
-                        y2="29.546"
-                        transform="rotate(135 24.5459 24.546)"
-                        class="circle"
-                      ></line>
-                      <line
-                        x1="15"
-                        x2="15"
-                        y1="28.5"
-                        y2="33.5"
-                        transform="rotate(180 15 28.5)"
-                        class="circle"
-                      ></line>
-                      <line
-                        x1="5.4541"
-                        x2="5.4541"
-                        y1="24.5459"
-                        y2="29.5459"
-                        transform="rotate(-135 5.4541 24.5459)"
-                        class="circle"
-                      ></line>
-                      <line
-                        x1="1.5"
-                        x2="1.5"
-                        y1="15"
-                        y2="20"
-                        transform="rotate(-90 1.5 15)"
-                        class="circle"
-                      ></line>
-                      <line
-                        x1="5.45408"
-                        x2="5.45408"
-                        y1="5.45404"
-                        y2="10.45404"
-                        transform="rotate(-45 5.45408 5.45404)"
-                        class="circle"
-                      ></line>
-                    </svg>
-                  </div>
-                  <div class="verifying-msg">
-                    <span class="verifying-text">Verifying...</span><br />
-                    <div
-                      class="error-overrun error-message"
-                      style="display: none"
-                      id="turnstile-stuck"
-                    >
-                      <span class="fr-overrun">Stuck here?</span
-                      ><a href="#refresh" class="fr-overrun-link"
-                        >Send Feedback</a
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="branding">
-                  <a
-                    class="cf-link"
-                    target="_blank"
-                    href="https://www.cloudflare.com/products/turnstile/?utm_source=turnstile&amp;utm_campaign=widget"
-                    rel="noopener noreferrer"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      aria-label="Cloudflare"
-                      class="logo"
-                      viewBox="0 0 73 25"
-                    >
-                      <path
-                        fill="#F6821F"
-                        d="m61.9 15.8.2-.6c.2-.8.1-1.5-.3-2a2 2 0 0 0-1.5-.8l-12.6-.1a.2.2 0 0 1-.2-.2v-.2a.3.3 0 0 1 .3-.2l12.7-.1c1.5-.1 3.1-1.4 3.7-2.9l.7-1.9v-.2A8.3 8.3 0 0 0 57 0 8.3 8.3 0 0 0 49 5.7c-.7-.6-1.6-.8-2.6-.7a3.8 3.8 0 0 0-3.2 4.6 5.3 5.3 0 0 0-5 6.2v.1l.2.1h23.4v-.2Z"
-                      />
-                      <path
-                        fill="#FBAD41"
-                        d="M66 7a6.8 6.8 0 0 0-.3 0 .2.2 0 0 0-.2.1l-.4 1.7c-.3.8-.2 1.5.2 2 .3.4.8.7 1.5.8l2.7.1a.2.2 0 0 1 .2.1.3.3 0 0 1 0 .3.3.3 0 0 1-.3.2l-2.8.1a4.5 4.5 0 0 0-3.7 2.9l-.2.5a.2.2 0 0 0 0 .1.2.2 0 0 0 .2.1h9.7l.1-.2A7 7 0 0 0 66.1 7Z"
-                      />
-                      <path
-                        d="M8.1 18.9h1.7v4.5h2.8V25H8.1v-6ZM14.3 21.9c0-1.7 1.4-3.1 3.2-3.1a3.1 3.1 0 1 1 0 6.2 3 3 0 0 1-3.2-3.1Zm4.7 0c0-.9-.6-1.6-1.5-1.6-1 0-1.5.7-1.5 1.6 0 .8.6 1.6 1.5 1.6s1.5-.7 1.5-1.6ZM22.7 22.3v-3.4h1.6v3.3c0 .9.5 1.3 1.1 1.3.7 0 1.1-.4 1.1-1.2v-3.4h1.7v3.3c0 2-1.1 2.8-2.8 2.8-1.7 0-2.7-.9-2.7-2.7M30.7 18.9h2.2c2.2 0 3.4 1.2 3.4 3 0 1.7-1.3 3-3.4 3h-2.2v-6Zm2.3 4.5c1 0 1.6-.5 1.6-1.5s-.7-1.5-1.6-1.5h-.7v3h.7ZM38.7 18.9h4.7v1.4h-3.1v1H43v1.4h-2.8V25h-1.6v-6ZM45.6 18.9h1.7v4.5H50V25h-4.5v-6ZM54.4 18.8H56l2.5 6h-1.7l-.5-1H54l-.4 1H52l2.5-6Zm1.5 3.7-.7-1.7-.7 1.7H56ZM60.6 18.9h2.8c1 0 1.5.2 2 .6.3.4.5.8.5 1.4 0 1-.5 1.6-1.3 1.9l1.4 2h-1.8L63 23.2h-.7v1.8h-1.7v-6Zm2.7 2.9c.6 0 1-.3 1-.7 0-.5-.4-.8-1-.8h-1v1.5h1ZM68.2 18.9H73v1.4h-3.2v1h2.9v1.2h-2.9v1H73v1.4h-4.8v-6ZM4.5 22.6c-.2.5-.7.9-1.3.9-1 0-1.5-.8-1.5-1.6 0-.9.6-1.6 1.5-1.6.6 0 1.2.4 1.4 1h1.7a3 3 0 0 0-3.1-2.5 3.1 3.1 0 0 0-3.2 3v.1A3 3 0 0 0 3.2 25c1.5 0 2.7-1 3-2.4H4.6Z"
-                        class="logo-text"
-                      />
-                    </svg>
-                  </a>
-                  <div class="terms">
-                    <a
-                      class="privacy-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://www.cloudflare.com/privacypolicy/"
-                      >Privacy</a
-                    ><span class="link-spacer"> &bull; </span
-                    ><a
-                      class="terms-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://www.cloudflare.com/website-terms/"
-                      >Terms</a
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    Click <a href="#" id="start">here</a> to start the attack.
 
-          <div class="core-msg spacer" id="core-text">
-            <script>
-              document.write(location.hostname)
-            </script>
-            needs to review the security of your connection before proceeding.
-          </div>
-
-          <noscript>
-            <h2>
-              <span class="challenge-error-text">
-                Enable JavaScript and cookies to continue
-              </span>
-            </h2>
-          </noscript>
-        </div>
-      </main>
-    </div>
-    <footer role="contentinfo">
-      <div class="footer-inner">
-        <div class="diagnostic-wrapper">
-          <div class="ray-id">Ray ID: <code>5d075a06a3a6495d</code></div>
-        </div>
-        <div class="text-center">
-          Performance &amp; security by
-          <a
-            rel="noopener noreferrer"
-            href="https://www.cloudflare.com?utm_source=challenge&amp;utm_campaign=m"
-            target="_blank"
-            >Cloudflare
-          </a>
-        </div>
-      </div>
-    </footer>
-
-    <div id="follow-position"></div>
-    <div id="popup" style="display:none">
-      Please double click the button to continue.
-      <button id="popup-button">Double Click</button>
-    </div>
+    <script>
+      document.getElementById('start').addEventListener('click', (event) => {
+        event.preventDefault()
+        const attackTab = window.open('attack', 'cf-attack')
+        if (!attackTab) {
+          alert('Please allow pop-ups for this site.')
+          return
+        }
+      })
+    </script>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+    </style>
   </body>
 </html>
