@@ -1,4 +1,4 @@
-import { Coordinate } from '../utils'
+import type { Coordinate } from '../utils'
 
 export const hiddenTransform = 'translate(-300%, -300%)'
 

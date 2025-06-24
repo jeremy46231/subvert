@@ -1,6 +1,7 @@
 # js stuff
 node_modules
 .vite
+dist/
 
 # don't mind me
 repomix-output.xml
