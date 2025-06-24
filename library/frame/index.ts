@@ -20,7 +20,7 @@ export class Frame {
     width = 1000,
     height = 1000,
     public buffer = 5,
-    public delay = 350
+    public delay = 900
   ) {
     this.element = document.createElement('iframe')
 

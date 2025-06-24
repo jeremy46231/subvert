@@ -1,13 +1,6 @@
 import { Frame } from '../../library/frame/index.ts'
 import { sleep } from '../../library/utils.ts'
 
-const testForm = document.getElementById('test-form') as HTMLFormElement
-
-testForm.addEventListener('submit', (event) => {
-  event.preventDefault()
-  testForm.reset()
-})
-
 async function main() {
   console.log('Starting attack')
 

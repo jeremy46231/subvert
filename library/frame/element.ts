@@ -2,6 +2,7 @@ import { FrameAttack } from './abstractAttack.ts'
 import { type Coordinate, sleep } from '../utils.ts'
 import {
   calculateTransformAndClip,
+  calculateTransform,
   hiddenTransform,
   pageFocus,
 } from './frameUtils.ts'
@@ -9,6 +10,7 @@ import {
 const eventNames = ['resize', 'scroll', 'orientationchange']
 
 export class ElementClick extends FrameAttack {
+  protected clicking = false
   constructor(
     element: HTMLIFrameElement,
     protected pageElements: HTMLElement[],
@@ -68,21 +70,38 @@ export class ElementClick extends FrameAttack {
 
   protected readonly interval: ReturnType<typeof setInterval>
   protected updatePosition() {
-    const pageElementRects = this.pageElements.flatMap((el) => [
-      ...el.getClientRects(),
-    ])
+    if (!this.clicking) {
+      const pageElementRects = this.pageElements.flatMap((el) => [
+        ...el.getClientRects(),
+      ])
 
-    const { transform, clipPath } = calculateTransformAndClip(
-      {
+      const { transform, clipPath } = calculateTransformAndClip(
+        {
+          top: this.target.y - this.buffer,
+          left: this.target.x - this.buffer,
+          width: 2 * this.buffer,
+          height: 2 * this.buffer,
+        },
+        pageElementRects
+      )
+      this.element.style.transform = transform
+      this.element.style.clipPath = clipPath
+    } else {
+      const source = {
         top: this.target.y - this.buffer,
         left: this.target.x - this.buffer,
         width: 2 * this.buffer,
         height: 2 * this.buffer,
-      },
-      pageElementRects
-    )
-    this.element.style.transform = transform
-    this.element.style.clipPath = clipPath
+      }
+      const viewport = {
+        top: 0,
+        left: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+      }
+      this.element.style.transform = calculateTransform(source, viewport)
+      this.element.style.clipPath = 'none'
+    }
   }
 
   /** Used to stop the callback from triggering multiple times */
@@ -94,6 +113,10 @@ export class ElementClick extends FrameAttack {
       // Stop waiting for clicks
       this.clicked = true
       clearInterval(this.interval)
+
+      // switch to full-screen for the remainder of the delay
+      this.clicking = true
+      this.updatePosition()
 
       this.onClick()
 
