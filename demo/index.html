@@ -14,18 +14,24 @@
       <b>JavaScript is required to run these attacks.</b>
     </noscript>
 
-    <p>Explanation goes here.</p>
+    <p>A small set of example attacks, in rough order of how good they are.</p>
 
     <ul>
       <li>
-        <a href="github/index.html" id="github"
-          >GitHub double-clickjacking demo</a
-        >
+        <a href="blog/index.html" id="blog">Blog double-clickjacking demo</a>
       </li>
       <li>
-        <a href="cloudflare/index.html" id="cloudflare"
-          >Cloudflare double-clickjacking demo</a
-        >
+        <a href="github/index.html" id="github">
+          Basic double-clickjacking demo
+        </a>
+      </li>
+      <li>
+        <a href="google-form/index.html"> Google Form library demo </a>
+      </li>
+      <li>
+        <a href="google-form-element/index.html">
+          Google Form library demo (element-based)
+        </a>
       </li>
     </ul>
 
@@ -46,7 +52,7 @@
         })
       }
       setupEventListener('github', 'github/attack', 'github-attack')
-      setupEventListener('cloudflare', 'cloudflare/attack', 'cf-attack')
+      setupEventListener('blog', 'blog/attack', 'blog-attack')
     </script>
   </body>
 </html>

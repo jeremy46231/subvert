@@ -1,6 +1,7 @@
 List of ideas and plans for future additions. I'm not planning on implementing all of the incomplete items, they're just ideas.
 
 - [x] Iframe-based attacks
+
   - [x] General framework
   - [x] Fullscreen iframe attack
   - [x] Single-element iframe attack
@@ -13,11 +14,13 @@ List of ideas and plans for future additions. I'm not planning on implementing a
 
 - [ ] Double-clickjacking attacks[^1]
   - [ ] Attacks against different services
-    - [x] GitHub
+    - [x] GitHub star
+    - [x] GitHub follow
     - [ ] more...
-  - [ ] UI for tricking the user
+  - [x] UI for tricking the user
     - [x] Basic UI
-    - [ ] Fake Cloudflare Turnstile page
+    - [x] Fake Cloudflare page
+      - [x] Fake Cloudflare Turnstile + CATCHPA
     - [ ] more...
 
 [^1]: I first learned about this from https://paulosyibelo.com/2024/12/doubleclickjacking-what.html

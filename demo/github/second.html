@@ -29,21 +29,21 @@
 
       mainButton.addEventListener('click', (event) => {
         // try {
-          // const baseTab = window.opener.opener
-          // const attackTab = window.opener
+        // const baseTab = window.opener.opener
+        // const attackTab = window.opener
 
-          // const baseFunction = baseTab.Function(
-          //   'win',
-          //   `
-          //   console.log('Starting delay for', win)
-          //   setTimeout(() => {
-          //     console.log('Redirecting', win)
-          //     win.location.replace('success')
-          //   }, 750)
-          // `
-          // )
+        // const baseFunction = baseTab.Function(
+        //   'win',
+        //   `
+        //   console.log('Starting delay for', win)
+        //   setTimeout(() => {
+        //     console.log('Redirecting', win)
+        //     win.location.replace('success')
+        //   }, 750)
+        // `
+        // )
 
-          // baseFunction(attackTab)
+        // baseFunction(attackTab)
         // } catch {}
 
         new BroadcastChannel('eval').postMessage(`

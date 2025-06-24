@@ -80,7 +80,7 @@ popupButton.addEventListener('click', () => {
   new BroadcastChannel('eval').postMessage(`
     setTimeout(() => {
       console.log('Redirecting to success')
-      window.open('/cloudflare/success', 'cf-attack')
+      window.open('/blog/success', 'blog-attack')
     }, 750)
   `)
 
@@ -144,7 +144,10 @@ function calculatePositions() {
   }
 
   // let widgetTop = widgetRect.top
-  const widgetTop = Math.min(widgetRect.top, followPositionRect.bottom - minWidgetHeight)
+  const widgetTop = Math.min(
+    widgetRect.top,
+    followPositionRect.bottom - minWidgetHeight
+  )
   const widgetBottom = followPositionRect.bottom
   const widgetLeft = Math.min(widgetRect.left, buttonLeft)
   const widgetRight = Math.max(widgetRect.right, buttonRight)
