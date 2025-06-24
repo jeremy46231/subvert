@@ -1,5 +1,10 @@
 {
-  "devDependencies": {
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
     "@types/bun": "latest",
     "prettier": "^3.5.3",
     "repomix": "^0.3.7",
