@@ -1,22 +1,20 @@
+/// <reference types="vite/client" />
 import { defineConfig } from 'vite'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import fg from 'fast-glob'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const htmlFiles = await fg.async('./**/*.html', {
+  cwd: dirname(fileURLToPath(import.meta.url)),
+  absolute: true,
+  ignore: ['**/node_modules/**', '**/dist/**', '**/.vite/**'],
+})
+console.log('HTML files found:', htmlFiles)
 
 export default defineConfig({
   build: {
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        blog: resolve(__dirname, 'demo/blog/index.html'),
-        github: resolve(__dirname, 'demo/github/index.html'),
-        googleForm: resolve(__dirname, 'demo/google-form/index.html'),
-        googleFormElement: resolve(
-          __dirname,
-          'demo/google-form-element/index.html'
-        ),
-      },
+      input: htmlFiles,
     },
   },
   esbuild: {

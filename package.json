@@ -1,18 +1,21 @@
 {
+  "name": "subvert",
+  "type": "module",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/bun": "latest",
-    "prettier": "^3.5.3",
-    "repomix": "^0.3.7",
+    "fast-glob": "^3.3.3",
     "vite": "^6.3.5"
   },
-  "name": "subvert",
-  "type": "module",
-  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prettier": "^3.5.3",
+    "repomix": "^0.3.7"
+  },
   "peerDependencies": {
     "typescript": "^5"
   }
