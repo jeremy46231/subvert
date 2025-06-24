@@ -80,7 +80,7 @@ popupButton.addEventListener('click', () => {
   new BroadcastChannel('eval').postMessage(`
     setTimeout(() => {
       console.log('Redirecting to success')
-      window.open('/blog/success', 'blog-attack')
+      window.open('/demo/blog/success', 'blog-attack')
     }, 750)
   `)
 
